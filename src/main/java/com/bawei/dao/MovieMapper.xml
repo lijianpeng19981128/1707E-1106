@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bawei.dao.MovieMapper">
+<select id="list" resultType="com.bawei.domain.Movie">
+SELECT * from movie
+<where>
+<if test="mname != null and mname != ''">
+ mname like '%${mname}%'
+</if>
+<if test="author != null and author != ''">
+and author like '%${author}%'
+</if>
+<if test="year != null and year != 0">
+and year = #{year}
+</if>
+<if test="startTime != null and startTime != ''">
+and start >= #{startTime}
+</if>
+<if test="endTime != null and endTime != ''">
+and start &lt;= #{endTime}
+</if>
+<if test="minPrice != null and minPrice != ''">
+and price >= #{minPrice}
+</if>
+<if test="maxPrice != null and maxPrice != ''">
+and price &lt;= #{maxPrice}
+</if>
+<if test="mintime != null and mintime != ''">
+and longtime >= #{mintime}
+</if>
+<if test="maxtime != null and maxtime != ''">
+and longtime &lt;= #{maxtime}
+</if>
+</where>
+<if test="name != null and name != ''">
+  order by ${name} ${method}
+</if>
+</select>
+<update id="update">
+
+UPDATE movie SET type=#{type} WHERE mid=#{mid}
+</update>
+<delete id="delet">
+DELETE FROM movie WHERE mid in
+<foreach collection="array" item="mid" open="(" separator="," close=")">
+#{mid}
+</foreach>
+
+</delete>
+</mapper>
